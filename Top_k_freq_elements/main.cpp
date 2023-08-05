@@ -8,7 +8,7 @@ using namespace std;
     
 vector<int> topKFrequent(vector<int>& nums, int k) {
 
-    vector<int> ans(nums.size(), 0);
+    vector<vector<int>> ans(nums.size(), {10001});
     vector<int> final_ans;
     unordered_map<int, int> intCount;
     unordered_set<int> nooms;
@@ -19,27 +19,44 @@ vector<int> topKFrequent(vector<int>& nums, int k) {
         nooms.insert(x);
     }
 
-    for (int x : nooms) {   // loop thru set
+    for (int x : nooms) // loop thru set
+    {   
         int count = intCount[x];
-        ans[nums.size() - count] = x;
+        int index = nums.size() - count;
+
+        if (ans[index][0] == 10001)
+        {
+            ans[index] = {x};
+        } else 
+        {
+            ans[index].push_back(x);
+        }
     }
 
-    ans.erase(remove(ans.begin(), ans.end(), 0), ans.end());
-
-    for (int i = 0; i < k; i++)
+    for (int i = 0; i < ans.size(); i++) // loop thru ans
     {
-        final_ans.push_back(ans[i]);
+        if (k == 0) { break; }
+
+        vector<int> temp = ans[i];
+
+        if (temp[0] == 10001) { continue; }
+
+        for (int x : temp) // loop thru inner ar
+        {
+            final_ans.push_back(x);
+            k--;
+        }
+        
     }
 
     return final_ans;
 }
 
-
 int main() 
 {
     // Test cases
-    vector<int> input = {1, 2, 3, 4, 5};
-    int k = 5;
+    vector<int> input = {1,5,0,0,0,0,0,-221,-221,5};
+    int k = 3;
     
     topKFrequent(input, k);
     
