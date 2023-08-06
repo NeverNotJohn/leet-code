@@ -40,7 +40,7 @@ vector<int> productExceptSelf(vector<int>& nums) {
 int main() 
 {
     // Test cases
-    vector<int> input = {1,2,3,4,5};
+    vector<int> input = {1,2,3,4};
     
     productExceptSelf(input);
     
