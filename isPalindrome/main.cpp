@@ -19,10 +19,12 @@ bool isPalindrome(string s) {
 
         if (new_s == "") { return true; }
 
-        for (int i = 0; i < new_s.size(); i++)
+        int size = new_s.size();
+
+        for (int i = 0; i < size; i++)
         {
             char p1 = new_s[i];
-            char p2 = new_s[new_s.size()-(1 + i)];
+            char p2 = new_s[size-(1 + i)];
             
             if (p1 != p2) { return false; }
 
