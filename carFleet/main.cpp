@@ -1,75 +1,63 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 using namespace std;
+
+bool comparePairs(const pair<int, int>& a, const pair<int, int>& b) {
+    return a.first < b.first;
+}
+
+int carFleet(int target, vector<int>& position, vector<int>& speed) {
     
-    int carFleet(int target, vector<int>& position, vector<int>& speed) {
-        
-        int ans = 0;
-        int counter = 0;
+    if (position.size() == 1) { return 1;}
 
-        if (position.size() == 1) { return 1; }
+    // CREATE SORTED PAIR VECTOR
+    vector<pair<int, int>> pairs;
 
-        while (counter != position.size() - 1)
-        {
-
-            bool fleet = true;
-            unordered_map<int, int> carMap;
-
-            for (int i = 0; i < position.size(); i++)
-            {
-                int pos = position[i];
-                int sp = speed[i];
-
-                if (pos == target)
-                {
-                    if (fleet) 
-                    {
-                        ans++;
-                        fleet = false;
-                    }
-                    position[i] = 0;
-                    speed[i] = 0;
-                    counter++;
-
-                    continue;
-                }
-                
-                position[i] = position[i] + speed[i];
-
-                pos = position[i];
-                sp = speed[i];
-
-                if (carMap.find(pos) != carMap.end())
-                {
-                    if (sp < speed[carMap[pos]])
-                    {
-                        speed[carMap[pos]] = sp;   
-                        carMap[pos] = i;
-                    }
-                    else
-                    {
-                        speed[i] = speed[carMap[pos]];
-                    }
-                }
-                else
-                {
-                    carMap[pos] = i;
-                }
-                
-
-            }
-        }
-        return ans + 1;
+    for (int i = 0; i < position.size(); i++)
+    {
+        pair<int, int> temp(position[i], speed[i]);
+        pairs.push_back(temp);
     }
+
+    // Sort the array of pairs by the first item using a custom comparison function
+    sort(pairs.begin(), pairs.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+        return a.first < b.first;
+    });
+
+    // actual code:
+
+    int ans = 1;
+    double x = target-pairs[pairs.size()-1].first;
+    double y = pairs[pairs.size()-1].second;
+    double lead = x / y;
+    
+    for (int i = pairs.size()-2; i >= 0; i--)
+    {
+        double x = target-pairs[i].first;
+        double y = pairs[i].second;
+        double time = x / y;
+        
+        if (time > lead) // DOESN'T BECOME FLEET
+        {
+            lead = time;
+            ans++;
+        }
+    }
+    
+
+    return ans;
+    
+}
 
 int main() 
 {
     // Test cases
-    vector<int> position = {0,2,4}; 
-    vector<int> speed = {4,2,1};
-    int ans = carFleet(100, position, speed);
+    vector<int> position = {8,3,7,4,6,5}; 
+    vector<int> speed = {4,4,4,4,4,4};
+    int ans = carFleet(10, position, speed);
     
     return 0;
 }
