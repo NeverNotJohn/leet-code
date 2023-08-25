@@ -9,7 +9,7 @@ using namespace std;
     
     int lengthOfLongestSubstring(string s) {
         
-        int ans = 0;
+        int ans = 1;
         unordered_set<char> chars;
 
         if (s.size() == 1 || s.size() == 0)
@@ -20,7 +20,11 @@ using namespace std;
         int L_index = 0;
         int R_index = 0;
 
-        while(R_index < s.size())
+        int temp_ans = 1;
+
+        chars.insert(s[0]);
+
+        while(R_index < s.size()-1)
         {
             char L = s[L_index];
             char R = s[R_index];
@@ -30,16 +34,43 @@ using namespace std;
             if (chars.find(next) == chars.end()) // char is UNIQUE
             {
                 R_index++;
-                ans++;
+                temp_ans++;
                 chars.insert(next);
             }
             else 
             {
-                chars.erase(L);
-                chars.insert(next);
+
+                if (temp_ans > ans)
+                {
+                    ans = temp_ans;
+                }
+
+
+                while (L != next && L_index < R_index-1)
+                {
+                    chars.erase(L);
+                    L_index++;
+                    L = s[L_index];
+                    temp_ans--;
+                }
+                
+                if (L_index == R_index-1)
+                {
+                    chars.erase(L);
+                    L_index++;
+                    R_index++;
+                    chars.insert(s[R_index]);
+                } 
+
                 L_index++;
-                R_index++;
+                chars.erase(L);
+                temp_ans--;
             }
+        }
+
+        if (temp_ans > ans)
+        {
+            ans = temp_ans;
         }
 
         return ans;
