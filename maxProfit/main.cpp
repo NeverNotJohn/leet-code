@@ -56,10 +56,11 @@ using namespace std;
                 
                 if (L_index == R_index-1)
                 {
-                    chars.erase(L);
                     L_index++;
+                    chars.erase(L);
                     R_index++;
                     chars.insert(s[R_index]);
+                    continue;
                 } 
 
                 L_index++;
@@ -79,7 +80,7 @@ using namespace std;
 int main() 
 {
     // Test cases
-    string input = "abcabcbb";
+    string input = "pwwkew";
     
     int ans = lengthOfLongestSubstring(input);
     
