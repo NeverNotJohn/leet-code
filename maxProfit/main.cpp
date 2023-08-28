@@ -45,23 +45,24 @@ using namespace std;
                     ans = temp_ans;
                 }
 
+                if (R == next)
+                {
+                    L_index = R_index+1;
+                    R_index++;
+                    temp_ans = 1;
+                    chars.clear();
+                    chars.insert(next);
+                    continue;
+                }
 
-                while (L != next && L_index < R_index-1)
+                while (L != next)
                 {
                     chars.erase(L);
                     L_index++;
                     L = s[L_index];
                     temp_ans--;
                 }
-                
-                if (L_index == R_index-1)
-                {
-                    L_index++;
-                    chars.erase(L);
-                    R_index++;
-                    chars.insert(s[R_index]);
-                    continue;
-                } 
+              
 
                 L_index++;
                 chars.erase(L);
